@@ -26,3 +26,4 @@ Route::post('/sumar', function (Request $request) {
 
 //web.php son rutas que devuelven vistas
 ?>
+
