@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\pokemon;
+use Illuminate\Support\Facades\Validator;
 
 
 class PokemonController extends Controller
@@ -12,13 +13,13 @@ class PokemonController extends Controller
     //index: obtiene todos los pokemones
     public function index()
     {
-        $pokemons = Pokemon::all();
+        $pokemons = pokemon::all();
         return response()->json(['pokemons' => $pokemons], 200);
     }
     //show: obtiene un pokemon por id
     public function show($id)
     {
-        $pokemon = Pokemon::find($id);
+        $pokemon = pokemon::find($id);
         if ($pokemon) {
             return response()->json(['pokemon' => $pokemon], 200);
         } else {
@@ -30,20 +31,20 @@ class PokemonController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'image' => 'required|url',
+            'image' => 'required|string|url',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['error' => $validator->errors()], 422);
         }
 
-        $pokemon = Pokemon::create($request->all());
+        $pokemon = pokemon::create($request->all());
         return response()->json(['pokemon' => $pokemon], 201);
     }
     //update: actualiza un pokemon por id
     public function update(Request $request, $id)
     {
-        $pokemon = Pokemon::find($id);
+        $pokemon = pokemon::find($id);
         if ($pokemon) {
             $validator = Validator::make($request->all(), [
                 'name' => 'string|max:255',
@@ -63,7 +64,7 @@ class PokemonController extends Controller
     //updatePartial: actualiza parcialmente un pokemon por id
     public function updatePartial(Request $request, $id)
     {
-        $pokemon = Pokemon::find($id);
+        $pokemon = pokemon::find($id);
         if ($pokemon) {
             $validator = Validator::make($request->all(), [
                 'name' => 'string|max:255',
@@ -83,7 +84,7 @@ class PokemonController extends Controller
     //destroy: elimina un pokemon por id
     public function destroy($id)
     {
-        $pokemon = Pokemon::find($id);
+        $pokemon = pokemon::find($id);
         if ($pokemon) {
             $pokemon->delete();
             return response()->json(['message' => 'Pokemon deleted successfully'], 200);
