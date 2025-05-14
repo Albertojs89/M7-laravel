@@ -49,13 +49,13 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::post('/pokemon', [PokemonController::class, 'store']);
 });
 
-// //ADMIN ROUTES
-// Route::middleware(\App\Http\Middleware\IsAdmin::class)->group(function () {
-//     Route::post('/pokemon', [PokemonController::class, 'store']);
-//     Route::put('/pokemon/{id}', [PokemonController::class, 'update']);
-//     Route::delete('/pokemon/{id}', [PokemonController::class, 'destroy']);
-//     Route::patch('/pokemon/{id}', [PokemonController::class, 'updatePartial']);
-// });
+//ADMIN ROUTES
+Route::middleware(\App\Http\Middleware\IsAdmin::class)->group(function () {
+    Route::post('/pokemon', [PokemonController::class, 'store']);
+    Route::put('/pokemon/{id}', [PokemonController::class, 'update']);
+    Route::delete('/pokemon/{id}', [PokemonController::class, 'destroy']);
+    Route::patch('/pokemon/{id}', [PokemonController::class, 'updatePartial']);
+});
 
 
 ?>
