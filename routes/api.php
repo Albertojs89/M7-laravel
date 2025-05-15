@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use GuzzleHttp\Promise\Is;
 use App\Http\Middleware\IsAdminAuth;
 use App\Http\Middleware\IsUserAuth;
+use App\Http\Controllers\GameController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -47,7 +48,15 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::get('me', [AuthController::class, 'getUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/pokemon', [PokemonController::class, 'store']);
+    Route::get('/games', [GameController::class, 'index']);
+    Route::post('/games', [GameController::class, 'store']);
+    Route::put('/games/{game}/finish', [GameController::class, 'update']);
+    Route::delete('/games/{game}', [GameController::class, 'destroy']);
+    Route::get('/ranking', [GameController::class, 'ranking']);
 });
+
+
+
 
 //ADMIN ROUTES
 Route::middleware(\App\Http\Middleware\IsAdmin::class)->group(function () {
