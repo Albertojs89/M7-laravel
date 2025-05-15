@@ -53,6 +53,8 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::put('/games/{game}/finish', [GameController::class, 'update']);
     Route::delete('/games/{game}', [GameController::class, 'destroy']);
     Route::get('/ranking', [GameController::class, 'ranking']);
+    Route::get('/games/user/{id}', [GameController::class, 'getGamesByUserId']);
+
 });
 
 
@@ -64,6 +66,7 @@ Route::middleware(\App\Http\Middleware\IsAdmin::class)->group(function () {
     Route::put('/pokemon/{id}', [PokemonController::class, 'update']);
     Route::delete('/pokemon/{id}', [PokemonController::class, 'destroy']);
     Route::patch('/pokemon/{id}', [PokemonController::class, 'updatePartial']);
+
 });
 
 
