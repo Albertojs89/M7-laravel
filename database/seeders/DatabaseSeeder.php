@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             GameSeeder::class,
+            CategorySeeder::class,
+            PokemonSeeder::class,
             // Aquí pots afegir altres seeders que vulguis executar
 
         ]);

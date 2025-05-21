@@ -52,7 +52,7 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::post('/games', [GameController::class, 'store']);
     Route::put('/games/{game}/finish', [GameController::class, 'update']);
     Route::delete('/games/{game}', [GameController::class, 'destroy']);
-    Route::get('/ranking', [GameController::class, 'ranking']);
+    Route::get('/games/ranking', [GameController::class, 'ranking']);
     Route::get('/games/user/{id}', [GameController::class, 'getGamesByUserId']);
 
 });

@@ -73,7 +73,7 @@ class GameController extends Controller
         return response()->json(['message' => 'Partida eliminada'], 200);
     }
 
-    //RANKING: Consulta les millors partides i retorna el ranking amb: minim de duració,  màxim de punts i minim de clicks.
+    //RANKING: Consulta les millors partides i retorna el ranking amb: minim de duració,  màxim de punts i minim de clicks. COMPROBAR NO FUNCIONA
     public function ranking()
     {
         $ranking = Game::select('user_id')
