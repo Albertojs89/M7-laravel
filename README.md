@@ -1,9 +1,9 @@
 
-# 📚 API REST - Usuarios y Mascotas Examen Alberto
+# API REST - Usuarios y Mascotas Examen Alberto
 
 ---
 
-## ✅ Tecnologías usadas
+## Tecnologías usadas
 
 - Laravel 11
 - PHP 8+
@@ -14,7 +14,7 @@
 
 ---
 
-## 🔧 Instalación
+##  Instalación
 
 1. Acceder al proyecto:
    
@@ -43,7 +43,7 @@
 
 ---
 
-## 🔐 Autenticación (JWT)
+##  Autenticación (JWT)
 
 La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
 
@@ -61,16 +61,16 @@ La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
 
 ---
 
-## 🔒 Middlewares personalizados
+##  Middlewares personalizados
 
 - `IsUserAuth`: Verifica que el token sea válido.
 - `IsAdmin`: Solo permite acceso a usuarios con `role = 'admin'`.
 
 ---
 
-## 📦 Rutas disponibles
+##  Rutas disponibles
 
-### ✨ Rutas públicas
+###  Rutas públicas
 
 | Método | Ruta           | Descripción             |
 |--------|----------------|-------------------------|
@@ -79,7 +79,7 @@ La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
 
 ---
 
-### 🔐 Rutas protegidas por token (`IsUserAuth`)
+###  Rutas protegidas por token (`IsUserAuth`)
 
 
 | Método | Ruta           | Descripción             |
@@ -93,7 +93,7 @@ La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
 
 ---
 
-### 🛡️ Rutas solo para admin (`IsUserAuth` + `IsAdmin`)
+###  Rutas solo para admin (`IsUserAuth` + `IsAdmin`)
 
 | Método | Ruta                    | Descripción                      |
 |--------|-------------------------|----------------------------------|
@@ -107,7 +107,7 @@ La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
 
 
 
-## 📁 Estructura destacada
+##  Estructura destacada
 
 - `routes/api.php`: Define todas las rutas
 - `app/Http/Middleware/IsUserAuth.php`: Middleware de autenticación
@@ -118,7 +118,7 @@ La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
 
 
 
-## 🧑‍💻 Credencials de prova
+##  Credencials de prova
 
 Per fer proves amb rutes protegides per rol `admin`, pots usar aquest usuari:
 
@@ -130,7 +130,7 @@ Rol: admin
 
 ---
 
-## 🔐 Com funciona JWT a la API
+##  Com funciona JWT a la API
 
 1. El client fa una petició POST a `/api/login` amb email i contrasenya.
 2. Si són correctes, es retorna un token JWT.
@@ -144,7 +144,7 @@ Rol: admin
 
 ---
 
-## 📋 Llistat de rutes
+##  Llistat de rutes
 
 ### Rutes públiques
 
