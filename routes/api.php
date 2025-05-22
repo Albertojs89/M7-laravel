@@ -1,39 +1,49 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PetController;
+use App\Http\Middleware\IsUserAuth;
+use App\Http\Middleware\IsAdmin;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// =========================
+// PUBLIC ROUTES (sin login)
+// =========================
 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-// Route::get('/students', function () {
-//     return "lista de estudiantes";
-// });
+// ==============================
+// PROTECTED ROUTES (logueado)
+// ==============================
 
+Route::middleware([IsUserAuth::class])->group(function () {
 
-Route::get('/students',[StudentController::class, 'index']);
+    // Autenticación
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
 
-Route::get('/students/{id}',[StudentController::class, 'show']);
+    // Mascotas (solo las del usuario autenticado)
+    Route::get('/pets', [PetController::class, 'index']);
+    Route::post('/pets', [PetController::class, 'store']);
+    Route::put('/pets/{id}', [PetController::class, 'update']);
+    Route::patch('/pets/{id}', [PetController::class, 'partialUpdate']);
+    Route::delete('/pets/{id}', [PetController::class, 'destroy']);
+});
 
-/*
+// ====================================
+// ADMIN ROUTES (logueado y admin)
+// ====================================
 
-<!--
+Route::middleware([IsUserAuth::class, IsAdmin::class])->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::get('/users/{id}/pets', [UserController::class, 'userPets']);
+});
 
-GET => LEER {ID}
-POST => AÑADIR
-PUT => ACTUALIZAR {ID}
-DELETE => ELIMINAR {ID}
-PATCH => ACTUALIZAR PARCIAL {ID}
-
-LA CONCHA DE TU MAREEE
--->
-
-
-
-*/
 
 ?>
 

@@ -1,62 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# 📚 API REST - Usuarios y Mascotas 
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+## ✅ Tecnologías usadas
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Laravel 11
+- PHP 8+
+- JWT Auth (`tymon/jwt-auth`)
+- MySQL
+- Railway (despliegue)
+- Postman (pruebas)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🔧 Instalación
 
-## Learning Laravel
+1. 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+composer install
+Crear archivo .env y configurar conexión a base de datos.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Generar clave de aplicación:
 
-## Laravel Sponsors
+bash
+Copiar
+Editar
+php artisan key:generate
+Ejecutar migraciones y seeders:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+bash
+Copiar
+Editar
+php artisan migrate --seed
+Generar clave JWT:
 
-### Premium Partners
+bash
+Copiar
+Editar
+php artisan jwt:secret
+🔐 Autenticación (JWT)
+La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+Registrar usuario:
+POST /api/register
 
-## Contributing
+Login (devuelve token):
+POST /api/login
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Usar token en el header:
 
-## Code of Conduct
+makefile
+Copiar
+Editar
+Authorization: Bearer <token>
+Accept: application/json
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+🔐 Autenticación (JWT)
+La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
+
+Registrar usuario:
+POST /api/register
+
+Login (devuelve token):
+POST /api/login
+
+Usar token en el header:
+
+makefile
+Copiar
+Editar
+Authorization: Bearer <token>
+Accept: application/json
+🔒 Middlewares personalizados
+IsUserAuth: Verifica que el token sea válido.
+
+IsAdmin: Solo permite acceso a usuarios con role = 'admin'.
+
+📦 Rutas disponibles
+✨ Rutas públicas
+Método	Ruta	Descripción
+POST	/api/register	Registro de usuario
+POST	/api/login	Login (devuelve token)
+
+🔐 Rutas protegidas por token (IsUserAuth)
+Método	Ruta	Descripción
+GET	/api/profile	Ver perfil del usuario
+
+🛡️ Rutas solo para admin (IsUserAuth + IsAdmin)
+Método	Ruta	Descripción
+GET	/api/users	Ver todos los usuarios
+GET	/api/users/{id}	Ver un usuario
+PUT	/api/users/{id}	Editar un usuario
+DELETE	/api/users/{id}	Eliminar un usuario
+GET	/api/users/{id}/pets	Ver mascotas del usuario
+
+🧪 Testing con Postman
+Login para obtener token
+
+Añadir token en los headers:
+
+makefile
+Copiar
+Editar
+Authorization: Bearer <token>
+Accept: application/json
+📁 Estructura destacada
+routes/api.php: Define todas las rutas
+
+app/Http/Middleware/IsUserAuth.php: Middleware de autenticación
+
+app/Http/Middleware/IsAdmin.php: Middleware de rol admin
+
+app/Http/Controllers/UserController.php: Lógica de usuarios y mascotas
