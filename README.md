@@ -1,4 +1,5 @@
-# 📚 API REST - Usuarios y Mascotas 
+
+# 📚 API REST - Usuarios y Mascotas Examen Alberto
 
 ---
 
@@ -15,104 +16,155 @@
 
 ## 🔧 Instalación
 
-1. 
+1. Acceder al proyecto:
+   
 
-composer install
-Crear archivo .env y configurar conexión a base de datos.
+2. Instalar dependencias:
+   
+   composer install
+   ```
 
-Generar clave de aplicación:
+3. Crear archivo `.env` y configurar conexión a base de datos.
 
-bash
-Copiar
-Editar
-php artisan key:generate
-Ejecutar migraciones y seeders:
+4. Generar clave de aplicación:
+   ```bash
+   php artisan key:generate
+   ```
 
-bash
-Copiar
-Editar
-php artisan migrate --seed
-Generar clave JWT:
+5. Ejecutar migraciones y seeders:
+   ```bash
+   php artisan migrate --seed
+   ```
 
-bash
-Copiar
-Editar
-php artisan jwt:secret
-🔐 Autenticación (JWT)
+6. Generar clave JWT:
+   ```bash
+   php artisan jwt:secret
+   ```
+
+---
+
+## 🔐 Autenticación (JWT)
+
 La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
 
-Registrar usuario:
-POST /api/register
+1. Registrar usuario:  
+   `POST /api/register`
 
-Login (devuelve token):
-POST /api/login
+2. Login (devuelve token):  
+   `POST /api/login`
 
-Usar token en el header:
+3. Usar token en el header:  
+   ```
+   Authorization: Bearer <token>
+   Accept: application/json
+   ```
 
-makefile
-Copiar
-Editar
-Authorization: Bearer <token>
-Accept: application/json
+---
+
+## 🔒 Middlewares personalizados
+
+- `IsUserAuth`: Verifica que el token sea válido.
+- `IsAdmin`: Solo permite acceso a usuarios con `role = 'admin'`.
+
+---
+
+## 📦 Rutas disponibles
+
+### ✨ Rutas públicas
+
+| Método | Ruta           | Descripción             |
+|--------|----------------|-------------------------|
+| POST   | /api/register  | Registro de usuario     |
+| POST   | /api/login     | Login (devuelve token)  |
+
+---
+
+### 🔐 Rutas protegidas por token (`IsUserAuth`)
+
+
+| Método | Ruta           | Descripción             |
+
+
+| GET    | /api/pets   | Ver mascota  |
+| POST    | /api/pets   | Crear mascota  |
+| PUT    | /api/pets/id   | Modificar mascota  |
+| PATCH    | /api/pets/id   | Modificar mascota parcialmente  |
+| DELETE    | /api/pets/id   | Eliminar mascota |
+
+---
+
+### 🛡️ Rutas solo para admin (`IsUserAuth` + `IsAdmin`)
+
+| Método | Ruta                    | Descripción                      |
+|--------|-------------------------|----------------------------------|
+| GET    | /api/users              | Ver todos los usuarios           |
+| GET    | /api/users/{id}         | Ver un usuario                   |
+| PUT    | /api/users/{id}         | Editar un usuario                |
+| DELETE | /api/users/{id}         | Eliminar un usuario              |
+| GET    | /api/users/{id}/pets    | Ver mascotas del usuario         |
+
+---
 
 
 
+## 📁 Estructura destacada
+
+- `routes/api.php`: Define todas las rutas
+- `app/Http/Middleware/IsUserAuth.php`: Middleware de autenticación
+- `app/Http/Middleware/IsAdmin.php`: Middleware de rol admin
+- `app/Http/Controllers/UserController.php`: Lógica de usuarios y mascotas
+
+---
 
 
-🔐 Autenticación (JWT)
-La API utiliza autenticación con JWT. Para acceder a rutas protegidas:
 
-Registrar usuario:
-POST /api/register
+## 🧑‍💻 Credencials de prova
 
-Login (devuelve token):
-POST /api/login
+Per fer proves amb rutes protegides per rol `admin`, pots usar aquest usuari:
 
-Usar token en el header:
+```
+Email: raul@example.com
+Password: password123
+Rol: admin
+```
 
-makefile
-Copiar
-Editar
-Authorization: Bearer <token>
-Accept: application/json
-🔒 Middlewares personalizados
-IsUserAuth: Verifica que el token sea válido.
+---
 
-IsAdmin: Solo permite acceso a usuarios con role = 'admin'.
+## 🔐 Com funciona JWT a la API
 
-📦 Rutas disponibles
-✨ Rutas públicas
-Método	Ruta	Descripción
-POST	/api/register	Registro de usuario
-POST	/api/login	Login (devuelve token)
+1. El client fa una petició POST a `/api/login` amb email i contrasenya.
+2. Si són correctes, es retorna un token JWT.
+3. Aquest token s’ha d’enviar en les peticions protegides, afegint el header:
+   ```
+   Authorization: Bearer <token>
+   Accept: application/json
+   ```
+4. El middleware `auth:api` valida el token i carrega l’usuari.
+5. El middleware `IsAdmin` comprova que `auth()->user()->role === 'admin'`.
 
-🔐 Rutas protegidas por token (IsUserAuth)
-Método	Ruta	Descripción
-GET	/api/profile	Ver perfil del usuario
+---
 
-🛡️ Rutas solo para admin (IsUserAuth + IsAdmin)
-Método	Ruta	Descripción
-GET	/api/users	Ver todos los usuarios
-GET	/api/users/{id}	Ver un usuario
-PUT	/api/users/{id}	Editar un usuario
-DELETE	/api/users/{id}	Eliminar un usuario
-GET	/api/users/{id}/pets	Ver mascotas del usuario
+## 📋 Llistat de rutes
 
-🧪 Testing con Postman
-Login para obtener token
+### Rutes públiques
 
-Añadir token en los headers:
+| Mètode | Ruta           | Descripció              |
+|--------|----------------|--------------------------|
+| POST   | /api/register  | Registre d’usuari        |
+| POST   | /api/login     | Login i generació token  |
 
-makefile
-Copiar
-Editar
-Authorization: Bearer <token>
-Accept: application/json
-📁 Estructura destacada
-routes/api.php: Define todas las rutas
+### Rutes amb autenticació (`auth:api`)
 
-app/Http/Middleware/IsUserAuth.php: Middleware de autenticación
+| Mètode | Ruta           | Descripció              |
+|--------|----------------|--------------------------|
+| GET    | /api/profile   | Perfil de l’usuari loguejat |
 
-app/Http/Middleware/IsAdmin.php: Middleware de rol admin
+### Rutes només per administradors (`IsAdmin`)
 
-app/Http/Controllers/UserController.php: Lógica de usuarios y mascotas
+| Mètode | Ruta                    | Descripció                     |
+|--------|-------------------------|---------------------------------|
+| GET    | /api/users              | Llistar tots els usuaris        |
+| GET    | /api/users/{id}         | Mostrar usuari concret          |
+| PUT    | /api/users/{id}         | Editar usuari                   |
+| DELETE | /api/users/{id}         | Eliminar usuari                 |
+| GET    | /api/users/{id}/pets    | Llistar mascotes d’un usuari    |

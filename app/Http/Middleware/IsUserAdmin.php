@@ -8,14 +8,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IsAdmin
 {
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth('api')->user() && auth('api')->user()->role === 'admin') {
+        $user= auth('api')->user();
+        if ($user && $user->role == 'admin') {
             return $next($request);
+        } else {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 403);
         }
-
-        return response()->json([
-            'message' => 'No autorizado, solo administradores'
-        ], 403);
     }
 }
