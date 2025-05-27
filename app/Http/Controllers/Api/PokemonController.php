@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\pokemon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 
 class PokemonController extends Controller
@@ -32,14 +33,21 @@ class PokemonController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'image' => 'required|string|url',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
 
-        $pokemon = pokemon::create($request->all());
-        return response()->json(['pokemon' => $pokemon], 201);
+        $pokemon = pokemon::create([
+            'name' => $request->name,
+            'image' => $request->image,
+            'category_id' => $request->category_id,
+            'user_id' => Auth::id(), // Asignar el ID del usuario autenticado
+        ]);
+        return response()->json(['pokemon' => $pokemon],
+        201);
     }
     //update: actualiza un pokemon por id
     public function update(Request $request, $id)
@@ -82,14 +90,35 @@ class PokemonController extends Controller
         }
     }
     //destroy: elimina un pokemon por id
-    public function destroy($id)
+    public function destroy(pokemon $card)
     {
-        $pokemon = pokemon::find($id);
-        if ($pokemon) {
-            $pokemon->delete();
-            return response()->json(['message' => 'Pokemon deleted successfully'], 200);
-        } else {
-            return response()->json(['message' => 'Pokemon not found'], 404);
+        $user = Auth::user();
+        if ($card->user_id !== $user->id && $user->role !== 'admin') {
+            return response()->json(['error' => 'No autoritzat'], 403);
         }
+
+        $card->delete();
+        return response()->json(['message' => 'Targeta eliminada']);
     }
+
+    public function getByCategory($categoryId)
+    {
+        $pokemons = pokemon::where('category_id', $categoryId)->get();
+
+        return response()->json($pokemons);
+    }
+
+    public function myPokemons()
+    {
+        $pokemons = pokemon::where('user_id', Auth::id())->get();
+
+        return response()->json([
+            'message' => 'Les teves targetes',
+            'data' => $pokemons
+        ]);
+    }
+
+
+
+
 }

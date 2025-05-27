@@ -8,6 +8,7 @@ use GuzzleHttp\Promise\Is;
 use App\Http\Middleware\IsAdminAuth;
 use App\Http\Middleware\IsUserAuth;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -40,7 +41,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('/pokemon', [PokemonController::class, 'index']);
 Route::get('/pokemon/{id}', [PokemonController::class, 'show']);
-
+Route::get('/my-Pokemons', [PokemonController::class, 'myCards']);
 
 
 //PROTECTED ROUTES
@@ -54,6 +55,11 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::delete('/games/{game}', [GameController::class, 'destroy']);
     Route::get('/games/ranking', [GameController::class, 'ranking']);
     Route::get('/games/user/{id}', [GameController::class, 'getGamesByUserId']);
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+    Route::get('/pokemons/category/{categoryId}', [PokemonController::class, 'getByCategory']);
 
 });
 
@@ -67,6 +73,18 @@ Route::middleware(\App\Http\Middleware\IsAdmin::class)->group(function () {
     Route::delete('/pokemon/{id}', [PokemonController::class, 'destroy']);
     Route::patch('/pokemon/{id}', [PokemonController::class, 'updatePartial']);
 
+     // 👥 Gestió d'usuaris
+     Route::get('users', [AuthController::class, 'getUsers']);
+     Route::get('/users/{id}', [AuthController::class, 'getUserById']);
+     Route::put('/users/{id}', [AuthController::class, 'updateUser']);
+     Route::delete('/users/{id}', [AuthController::class, 'deleteUser']);
+
+     // CRUD de partides
+        Route::get('/games', [GameController::class, 'index']);
+        Route::get('/games/{game}', [GameController::class, 'show']);
+        Route::put('/games/{game}', [GameController::class, 'update']);
+        Route::delete('/games/{game}', [GameController::class, 'destroy']);
+        
 });
 
 
