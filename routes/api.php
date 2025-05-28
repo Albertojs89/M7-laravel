@@ -18,22 +18,7 @@ Route::get('/students',[StudentController::class, 'index']);
 
 Route::get('/students/{id}',[StudentController::class, 'show']);
 
-/*
 
-<!--
-
-GET => LEER {ID}
-POST => AÑADIR
-PUT => ACTUALIZAR {ID}
-DELETE => ELIMINAR {ID}
-PATCH => ACTUALIZAR PARCIAL {ID}
-
-LA CONCHA DE TU MAREEE
--->
-
-
-
-*/
 
 ?>
 

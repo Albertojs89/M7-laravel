@@ -1,4 +1,7 @@
 <?php
+
+use App\Http\Controllers\BookController;
+use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -6,23 +9,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/peliculas', function () {
-    return view('peliculas');
-});
 
-Route::get('/sumar', function () {
-    return view('sumar');
-});
-
-Route::post('/sumar', function (Request $request) {
-    $numero1 = $request->input('numero1');
-    $numero2 = $request->input('numero2');
-    $resultado = $numero1 + $numero2;
-
-    return view('sumar', ['resultado' => $resultado]);
-});
-
-
+Route::resource('books',BookController::class);
 
 //web.php son rutas que devuelven vistas
 ?>
