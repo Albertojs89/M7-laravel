@@ -84,7 +84,14 @@ Route::middleware(\App\Http\Middleware\IsAdmin::class)->group(function () {
         Route::get('/games/{game}', [GameController::class, 'show']);
         Route::put('/games/{game}', [GameController::class, 'update']);
         Route::delete('/games/{game}', [GameController::class, 'destroy']);
-        
+
+    // CRUD de categories
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/categories/{category}', [CategoryController::class, 'show']);
+    Route::put('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+    Route::post('/categories', [CategoryController::class, 'store']);
+    
 });
 
 
