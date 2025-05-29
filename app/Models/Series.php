@@ -14,3 +14,6 @@ class Series extends Model
         'portal',
     ];
 }
+
+
+
